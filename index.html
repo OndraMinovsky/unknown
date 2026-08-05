@@ -116,41 +116,33 @@
         <p style="font-size: 14px; opacity: 0.8; margin: 0;">Tento web vyžaduje zařízení s operačním systémem iOS 26 nebo novějším.</p>
     </div>
 
-    <script>
+        <script>
         // Zobrazíme spinner jako první
         document.getElementById('loader-content').style.display = 'flex';
 
-        // Funkce pro detekci iOS 26 a novějších verzí
+        // Detekce iOS zařízení
         function checkiOSVersion() {
             const ua = navigator.userAgent;
             const isIOSDevice = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             
-            if (!isIOSDevice) return false;
-
-            // Pokus o parsování hlavní verze iOS z User-Agent řetězce
-            const match = ua.match(/OS (\d+)_/);
-            if (match && match[1]) {
-                const majorVersion = parseInt(match[1], 10);
-                return majorVersion >= 26;
-            }
-
-            // Fallback pro případ, kdy UA string neobsahuje přesnou verzi (simulace / nová architektura)
-            return true; 
+            // Pro účely testování teď ověřujeme pouze to, zda jde o iOS zařízení
+            return isIOSDevice;
         }
 
-        // Simulace krátkého ověření se spinnerem (0.8 sekundy) a následné spuštění
+        // Krátká prodleva se spinnerem (0.8 sekundy) a spuštění
         setTimeout(() => {
             document.getElementById('loader-content').style.display = 'none';
 
             if (checkiOSVersion()) {
                 document.getElementById('app-content').style.display = 'flex';
-                // Vyvolání požadovaného uvítacího alertu
+                // Uvítací alert
                 alert("Welcome to the iOS liquid glass playground");
             } else {
                 document.getElementById('block-content').style.display = 'flex';
             }
-        }, 2000);
+        }, 800);
     </script>
+
 
 </body>
 </html>
