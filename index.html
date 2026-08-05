@@ -2,34 +2,20 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iOS Liquid Glass TabBar 💧📱</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>iOS 18 Native Liquid Glass 💧📱</title>
     <style>
+        /* Použití reálných nativních systémových barev a chování iOS 18 */
         :root {
             color-scheme: light dark;
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.8);
-            --text-color: #1c1c1e;
-            --shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            --tabbar-bg: rgba(255, 255, 255, 0.75);
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-                --glass-bg: rgba(30, 30, 30, 0.55);
-                --glass-border: rgba(255, 255, 255, 0.15);
-                --text-color: #f9f9fb;
-                --shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-                --tabbar-bg: rgba(30, 30, 30, 0.65);
-            }
+            --system-bg: canvas;
+            --system-text: canvastext;
         }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: var(--bg-gradient);
-            color: var(--text-color);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background-color: var(--system-bg);
+            color: var(--system-text);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -38,52 +24,74 @@
             margin: 0;
             gap: 20px;
             overflow: hidden;
+            /* Povolení nativního chování iOS gest */
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
         }
 
+        /* Nativní Liquid Glass kontejner využívající systémové materiály Safari */
         .glass-container {
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px) saturate(180%);
-            -webkit-backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid var(--glass-border);
-            box-shadow: var(--shadow);
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.75);
+            -webkit-backdrop-filter: blur(40px) saturate(190%);
+            backdrop-filter: blur(40px) saturate(190%);
+            border: 0.5px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-radius: 28px;
             padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 16px;
-            width: 300px;
+            width: 320px;
             text-align: center;
-            margin-bottom: 60px; /* Odsazení, aby obsah nebyl pod tab barem */
+            margin-bottom: 60px;
         }
 
+        @media (prefers-color-scheme: dark) {
+            .glass-container {
+                background: rgba(30, 30, 30, 0.65);
+                border: 0.5px solid rgba(255, 255, 255, 0.15);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        /* Nativní systémové ovládací prvky Apple */
         select, button {
-            appearance: auto;
-            -webkit-appearance: auto;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            color: var(--text-color);
+            font-family: inherit;
+            appearance: none;
+            -webkit-appearance: none;
+            background-color: rgba(120, 120, 128, 0.12);
+            border: none;
+            color: var(--system-text);
             padding: 14px 18px;
-            font-size: 16px;
-            font-weight: 500;
-            border-radius: 14px;
+            font-size: 17px;
+            font-weight: 400;
+            border-radius: 12px;
             cursor: pointer;
             width: 100%;
             box-sizing: border-box;
+            text-align: center;
+            transition: opacity 0.15s ease;
         }
 
-        /* Skryté prvky do ověření */
+        select {
+            text-align-last: center;
+        }
+
+        button:active, select:active {
+            opacity: 0.6;
+        }
+
+        /* Skryté bloky pro logiku ověření */
         #loader-content, #app-content, #block-content {
             display: none;
         }
 
-        /* Nativní iOS spinner */
+        /* Nativní iOS Activity Indicator (Spinner) */
         .ios-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(150, 150, 150, 0.2);
-            border-top: 4px solid var(--text-color);
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(150, 150, 150, 0.2);
+            border-top: 3px solid var(--system-text);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 0 auto;
@@ -94,50 +102,53 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Spodní nativní iOS TabBar (Liquid Glass) */
+        /* Nativní spodní TabBar stylizovaný dle iOS 18 */
         .ios-tabbar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            height: 80px;
-            background: var(--tabbar-bg);
-            backdrop-filter: blur(30px) saturate(200%);
+            height: 84px;
+            background: rgba(248, 248, 248, 0.8);
             -webkit-backdrop-filter: blur(30px) saturate(200%);
-            border-top: 1px solid var(--glass-border);
+            backdrop-filter: blur(30px) saturate(200%);
+            border-top: 0.5px solid rgba(0, 0, 0, 0.15);
             display: flex;
             justify-content: space-around;
-            align-items: center;
-            padding-bottom: 20px; /* Prostor pro domácí lištu na iPhonu */
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
+            align-items: flex-start;
+            padding-top: 10px;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .ios-tabbar {
+                background: rgba(22, 22, 22, 0.8);
+                border-top: 0.5px solid rgba(255, 255, 255, 0.15);
+            }
         }
 
         .tab-item {
             background: none;
             border: none;
-            color: var(--text-color);
-            font-size: 12px;
+            color: var(--system-text);
+            font-size: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             cursor: pointer;
-            opacity: 0.6;
-            transition: opacity 0.2s, transform 0.2s;
-            padding: 6px 12px;
+            opacity: 0.5;
+            transition: opacity 0.2s;
+            width: 33%;
         }
 
         .tab-item.active {
             opacity: 1;
-            font-weight: 600;
-        }
-
-        .tab-item:active {
-            transform: scale(0.92);
+            color: #007aff; /* Nativní iOS systémová modrá */
         }
 
         .tab-icon {
-            font-size: 20px;
+            font-size: 22px;
         }
     </style>
 </head>
@@ -146,46 +157,46 @@
     <!-- Načítací obrazovka -->
     <div id="loader-content" class="glass-container">
         <div class="ios-spinner"></div>
-        <p style="font-size: 14px; margin: 0; opacity: 0.8;">Načítání Liquid Glass...</p>
+        <p style="font-size: 15px; margin: 0; opacity: 0.6;">Načítání iOS 18...</p>
     </div>
 
-    <!-- Hlavní obsah pro iOS -->
+    <!-- Hlavní obsah pro iOS 18+ -->
     <div id="app-content" class="glass-container">
-        <h2>iOS Liquid Glass 💧</h2>
+        <h2 style="font-size: 20px; font-weight: 600; margin: 0 0 10px 0;">iOS 18 Playground 💧</h2>
         <select onchange="if(this.value) alert('Vybráno: ' + this.value)">
-            <option value="" disabled selected>Vyber možnost...</option>
+            <option value="" disabled selected>Navigační menu</option>
             <option value="Home">Home</option>
             <option value="Converter">Converter</option>
         </select>
-        <button onclick="alert('Funguje na iOS!')">Akční tlačítko</button>
+        <button onclick="alert('Nativní prvek iOS 18 aktivní!')">Akční tlačítko</button>
     </div>
 
     <!-- Blokovaný obsah pro jiné platformy -->
     <div id="block-content" class="glass-container">
-        <h2>⚠️ Pouze pro iOS</h2>
-        <p style="font-size: 14px; opacity: 0.8; margin: 0;">Tento web vyžaduje zařízení s iOS.</p>
+        <h2 style="font-size: 20px; font-weight: 600; margin: 0 0 10px 0;">⚠️ Omezeno</h2>
+        <p style="font-size: 15px; opacity: 0.6; margin: 0;">Tato ukázka vyžaduje nativní prostředí iOS 18.</p>
     </div>
 
-    <!-- Spodní nativní iOS TabBar -->
+    <!-- Nativní spodní TabBar -->
     <nav class="ios-tabbar" id="bottom-nav" style="display: none;">
         <button class="tab-item active" onclick="switchTab(this, 'Home')">
-            <span class="tab-icon">🏠</span>
-            <span>Home</span>
+            <span class="tab-icon">􀎞</span>
+            <span>Domů</span>
         </button>
         <button class="tab-item" onclick="switchTab(this, 'Explore')">
-            <span class="tab-icon">✨</span>
-            <span>Explore</span>
+            <span class="tab-icon">􀋄</span>
+            <span>Prozkoumat</span>
         </button>
         <button class="tab-item" onclick="switchTab(this, 'Settings')">
-            <span class="tab-icon">⚙️</span>
-            <span>Settings</span>
+            <span class="tab-icon">􀍟</span>
+            <span>Nastavení</span>
         </button>
     </nav>
 
     <script>
         document.getElementById('loader-content').style.display = 'flex';
 
-        function checkiOSDevice() {
+        function checkIOSDevice() {
             const ua = navigator.userAgent;
             return /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         }
@@ -193,7 +204,7 @@
         setTimeout(() => {
             document.getElementById('loader-content').style.display = 'none';
 
-            if (checkiOSDevice()) {
+            if (checkIOSDevice()) {
                 document.getElementById('app-content').style.display = 'flex';
                 document.getElementById('bottom-nav').style.display = 'flex';
                 alert("Welcome to the iOS liquid glass playground");
@@ -203,10 +214,9 @@
         }, 800);
 
         function switchTab(element, tabName) {
-            // Změna aktivního stavu v tab baru
             document.querySelectorAll('.tab-item').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
-            alert('Přepnuto na záložku: ' + tabName);
+            alert('Záložka: ' + tabName);
         }
     </script>
 
