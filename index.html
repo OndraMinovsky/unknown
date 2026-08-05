@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iOS Liquid Glass 💧📱</title>
+    <title>iOS Only Liquid Glass 💧📱</title>
     <style>
-        /* Podpora pro automatický systémový Dark/Light režim */
         :root {
             color-scheme: light dark;
             --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -38,22 +37,21 @@
             gap: 20px;
         }
 
-        /* Kontejner s Liquid Glass efektem */
         .glass-container {
             background: var(--glass-bg);
             backdrop-filter: blur(25px) saturate(180%);
             -webkit-backdrop-filter: blur(25px) saturate(180%);
             border: 1px solid var(--glass-border);
             box-shadow: var(--shadow);
-            border-radius: 24px;
+            border-radius: 24px; /* Zde můžeš změnit zakulacení (border-radius) */
             padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 16px;
             width: 300px;
+            text-align: center;
         }
 
-        /* Nativní systémové prvky s Liquid Glass kabátkem */
         select, button {
             appearance: auto;
             -webkit-appearance: auto;
@@ -65,54 +63,48 @@
             padding: 14px 18px;
             font-size: 16px;
             font-weight: 500;
-            border-radius: 20%;
+            border-radius: 14px; /* Zakulacení vnitřních prvků */
             cursor: pointer;
             width: 100%;
             box-sizing: border-box;
-            transition: transform 0.2s ease, background 0.2s ease;
         }
 
-        select:hover, button:hover {
-            transform: scale(1.02);
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        h2 {
-            font-size: 18px;
-            margin: 0 0 5px 0;
-            text-align: center;
-            font-weight: 600;
-            letter-spacing: -0.01em;
+        /* Skryto ve výchozím stavu, dokud JS nepotvrdí iOS */
+        #app-content, #block-content {
+            display: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="glass-container">
-        <h2>Navigation Menu 💧</h2>
-
-        <!-- Nativní select dropdown -->
+    <!-- Obsah pro iOS -->
+    <div id="app-content" class="glass-container">
+        <h2>iOS Liquid Glass 💧</h2>
         <select onchange="if(this.value) alert('Vybráno: ' + this.value)">
             <option value="" disabled selected>Vyber možnost...</option>
             <option value="Home">Home</option>
             <option value="Converter">Converter</option>
-            <option value="Base64 Decode">- Base64 Decode</option>
-            <option value="ASCII">-- ASCII</option>
-            <option value="Audio">-- Audio</option>
-            <option value="Basic Auth">-- Basic Auth</option>
-            <option value="File">-- File</option>
-            <option value="Hex">-- Hex</option>
-            <option value="Image">-- Image</option>
-            <option value="BMP">--- BMP</option>
-            <option value="GIF">--- GIF</option>
         </select>
-
-        <!-- Nativní tlačítko -->
-        <button onclick="alert('Liquid Glass tlačítko funguje!')">Akční tlačítko</button>
+        <button onclick="alert('Funguje na iOS!')">Akční tlačítko</button>
     </div>
+
+    <!-- Blokovaný obsah pro jiné platformy -->
+    <div id="block-content" class="glass-container">
+        <h2>⚠️ Pouze pro iOS</h2>
+        <p style="font-size: 14px; opacity: 0.8; margin: 0;">Tato webová stránka je dostupná pouze na zařízeních iPhone nebo iPad.</p>
+    </div>
+
+    <script>
+        // Detekce iOS (iPhone, iPad, iPod)
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+        if (isIOS) {
+            document.getElementById('app-content').style.display = 'flex';
+        } else {
+            document.getElementById('block-content').style.display = 'flex';
+        }
+    </script>
 
 </body>
 </html>
