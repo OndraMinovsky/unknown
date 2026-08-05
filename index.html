@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reálný Dropdown 📋</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Nativní select stylizovaný jako moderní tlačítko s šipkou */
+        .native-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-color: #007aff;
+            color: white;
+            padding: 14px 36px 14px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            transition: background 0.2s;
+        }
+
+        .native-select:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Reálné nativní HTML rozbalovací menu -->
+    <select class="native-select" onchange="if(this.value) alert('Vybráno: ' + this.value)">
+        <option value="" disabled selected>Navigation Menu 📋</option>
+        <option value="Home">Home</option>
+        <option value="Converter">Converter</option>
+        <option value="Base64 Decode">- Base64 Decode</option>
+        <option value="ASCII">-- ASCII</option>
+        <option value="Audio">-- Audio</option>
+        <option value="Basic Auth">-- Basic Auth</option>
+        <option value="File">-- File</option>
+        <option value="Hex">-- Hex</option>
+        <option value="Image">-- Image</option>
+        <option value="BMP">--- BMP</option>
+        <option value="GIF">--- GIF</option>
+    </select>
+
+</body>
+</html>
