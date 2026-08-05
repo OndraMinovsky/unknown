@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iOS Only Liquid Glass 💧📱</title>
+    <title>iOS 26 Liquid Glass 💧📱</title>
     <style>
         :root {
             color-scheme: light dark;
@@ -43,7 +43,7 @@
             -webkit-backdrop-filter: blur(25px) saturate(180%);
             border: 1px solid var(--glass-border);
             box-shadow: var(--shadow);
-            border-radius: 24px; /* Zde můžeš změnit zakulacení (border-radius) */
+            border-radius: 24px; /* Zde můžeš upravit zakulacení rohů */
             padding: 24px;
             display: flex;
             flex-direction: column;
@@ -63,47 +63,93 @@
             padding: 14px 18px;
             font-size: 16px;
             font-weight: 500;
-            border-radius: 14px; /* Zakulacení vnitřních prvků */
+            border-radius: 14px;
             cursor: pointer;
             width: 100%;
             box-sizing: border-box;
         }
 
-        /* Skryto ve výchozím stavu, dokud JS nepotvrdí iOS */
-        #app-content, #block-content {
+        /* Skryté prvky do ověření systému */
+        #loader-content, #app-content, #block-content {
             display: none;
+        }
+
+        /* Nativní styl pro iOS spinner (ProgressRing / Activity Indicator) */
+        .ios-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(150, 150, 150, 0.2);
+            border-top: 4px solid var(--text-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Obsah pro iOS -->
+    <!-- Načítací obrazovka s nativním iOS spinnerem -->
+    <div id="loader-content" class="glass-container">
+        <div class="ios-spinner"></div>
+        <p style="font-size: 14px; margin: 0; opacity: 0.8;">Ověřování systému iOS 26+...</p>
+    </div>
+
+    <!-- Hlavní obsah pro iOS 26+ -->
     <div id="app-content" class="glass-container">
-        <h2>iOS Liquid Glass 💧</h2>
+        <h2>iOS 26 Liquid Glass 💧</h2>
         <select onchange="if(this.value) alert('Vybráno: ' + this.value)">
             <option value="" disabled selected>Vyber možnost...</option>
             <option value="Home">Home</option>
             <option value="Converter">Converter</option>
         </select>
-        <button onclick="alert('Funguje na iOS!')">Akční tlačítko</button>
+        <button onclick="alert('Funguje na iOS 26+!')">Akční tlačítko</button>
     </div>
 
-    <!-- Blokovaný obsah pro jiné platformy -->
+    <!-- Blokovaný obsah pro staré iOS nebo jiné platformy -->
     <div id="block-content" class="glass-container">
-        <h2>⚠️ Pouze pro iOS</h2>
-        <p style="font-size: 14px; opacity: 0.8; margin: 0;">Tato webová stránka je dostupná pouze na zařízeních iPhone nebo iPad.</p>
+        <h2>⚠️ Vyžadován iOS 26+</h2>
+        <p style="font-size: 14px; opacity: 0.8; margin: 0;">Tento web vyžaduje zařízení s operačním systémem iOS 26 nebo novějším.</p>
     </div>
 
     <script>
-        // Detekce iOS (iPhone, iPad, iPod)
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        // Zobrazíme spinner jako první
+        document.getElementById('loader-content').style.display = 'flex';
 
-        if (isIOS) {
-            document.getElementById('app-content').style.display = 'flex';
-        } else {
-            document.getElementById('block-content').style.display = 'flex';
+        // Funkce pro detekci iOS 26 a novějších verzí
+        function checkiOSVersion() {
+            const ua = navigator.userAgent;
+            const isIOSDevice = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            
+            if (!isIOSDevice) return false;
+
+            // Pokus o parsování hlavní verze iOS z User-Agent řetězce
+            const match = ua.match(/OS (\d+)_/);
+            if (match && match[1]) {
+                const majorVersion = parseInt(match[1], 10);
+                return majorVersion >= 26;
+            }
+
+            // Fallback pro případ, kdy UA string neobsahuje přesnou verzi (simulace / nová architektura)
+            return true; 
         }
+
+        // Simulace krátkého ověření se spinnerem (0.8 sekundy) a následné spuštění
+        setTimeout(() => {
+            document.getElementById('loader-content').style.display = 'none';
+
+            if (checkiOSVersion()) {
+                document.getElementById('app-content').style.display = 'flex';
+                // Vyvolání požadovaného uvítacího alertu
+                alert("Welcome to the iOS liquid glass playground");
+            } else {
+                document.getElementById('block-content').style.display = 'flex';
+            }
+        }, 2000);
     </script>
 
 </body>
