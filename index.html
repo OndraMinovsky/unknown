@@ -3,26 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automatický Dark/Light Mode 🌗</title>
+    <title>iOS Liquid Glass 💧📱</title>
     <style>
-        /* Definice barevných palet pomocí CSS proměnných */
+        /* Podpora pro automatický systémový Dark/Light režim */
         :root {
-            --bg-color: #ffffff;
-            --text-color: #000000;
+            color-scheme: light dark;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --text-color: #1c1c1e;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
         }
 
-        /* Pokud má uživatel v systému zapnutý Dark Mode */
         @media (prefers-color-scheme: dark) {
             :root {
-                --bg-color: #121212;
-                --text-color: #ffffff;
+                --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+                --glass-bg: rgba(30, 30, 30, 0.55);
+                --glass-border: rgba(255, 255, 255, 0.15);
+                --text-color: #f9f9fb;
+                --shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
             }
         }
 
         body {
-            background-color: var(--bg-color);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: var(--bg-gradient);
             color: var(--text-color);
-            font-family: system-ui, -apple-system, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -30,28 +36,83 @@
             height: 100vh;
             margin: 0;
             gap: 20px;
-            transition: background 0.3s, color 0.3s;
         }
 
-        /* Nativní styly pro prvky, aby hezky vypadaly v obou režimech */
+        /* Kontejner s Liquid Glass efektem */
+        .glass-container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow);
+            border-radius: 24px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 300px;
+        }
+
+        /* Nativní systémové prvky s Liquid Glass kabátkem */
         select, button {
-            padding: 10px 16px;
+            appearance: auto;
+            -webkit-appearance: auto;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            color: var(--text-color);
+            padding: 14px 18px;
             font-size: 16px;
-            border-radius: 8px;
+            font-weight: 500;
+            border-radius: 100%;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        select:hover, button:hover {
+            transform: scale(1.02);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        h2 {
+            font-size: 18px;
+            margin: 0 0 5px 0;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: -0.01em;
         }
     </style>
 </head>
 <body>
 
-    <h1>Automatický režim dle systému 📱</h1>
+    <div class="glass-container">
+        <h2>Navigation Menu 💧</h2>
 
-    <select>
-        <option value="" disabled selected>Navigation Menu</option>
-        <option value="Home">Home</option>
-        <option value="Converter">Converter</option>
-    </select>
+        <!-- Nativní select dropdown -->
+        <select onchange="if(this.value) alert('Vybráno: ' + this.value)">
+            <option value="" disabled selected>Vyber možnost...</option>
+            <option value="Home">Home</option>
+            <option value="Converter">Converter</option>
+            <option value="Base64 Decode">- Base64 Decode</option>
+            <option value="ASCII">-- ASCII</option>
+            <option value="Audio">-- Audio</option>
+            <option value="Basic Auth">-- Basic Auth</option>
+            <option value="File">-- File</option>
+            <option value="Hex">-- Hex</option>
+            <option value="Image">-- Image</option>
+            <option value="BMP">--- BMP</option>
+            <option value="GIF">--- GIF</option>
+        </select>
 
-    <button onclick="alert('Funguje to!')">Tlačítko</button>
+        <!-- Nativní tlačítko -->
+        <button onclick="alert('Liquid Glass tlačítko funguje!')">Akční tlačítko</button>
+    </div>
 
 </body>
 </html>
