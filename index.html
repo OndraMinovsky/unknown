@@ -3,52 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nativní systémový prompt 📱</title>
-    <style>
-        body {
-            font-family: system-ui, -apple-system, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            gap: 20px;
-        }
-
-        button {
-            background-color: #007aff;
-            color: white;
-            border: none;
-            padding: 14px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 12px;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <title>Nativní prvky 📱</title>
 </head>
 <body>
 
-    <!-- Tlačítko pro vyvolání nativního systémového dialogu -->
-    <button onclick="openNativePrompt()">Otevřít nativní systémový dialog 💬</button>
+    <!-- Nativní systémový select (dropdown) -->
+    <select onchange="if(this.value) alert('Vybráno: ' + this.value)">
+        <option value="" disabled selected>Navigation Menu</option>
+        <option value="Home">Home</option>
+        <option value="Converter">Converter</option>
+        <option value="Base64 Decode">- Base64 Decode</option>
+        <option value="ASCII">-- ASCII</option>
+        <option value="Audio">-- Audio</option>
+        <option value="Basic Auth">-- Basic Auth</option>
+        <option value="File">-- File</option>
+        <option value="Hex">-- Hex</option>
+        <option value="Image">-- Image</option>
+        <option value="BMP">--- BMP</option>
+        <option value="GIF">--- GIF</option>
+    </select>
 
-    <script>
-        function openNativePrompt() {
-            // Vyvolá nativní systémové okno prohlížeče
-            let vysledek = prompt("Zadej volbu (Home, Converter, ASCII...):", "Home");
-            
-            if (vysledek !== null) {
-                alert("Zadal jsi: " + vysledek);
-            }
-        }
-    </script>
+    <!-- Nativní systémové tlačítko -->
+    <button onclick="alert('Nativní tlačítko stisknuto!')">Tlačítko</button>
 
 </body>
 </html>
