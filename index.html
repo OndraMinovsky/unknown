@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reálný Dropdown 📋</title>
+    <title>Nativní Dialog a Select 🪟📋</title>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -14,37 +14,76 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
+            gap: 20px;
         }
 
-        /* Nativní select stylizovaný jako moderní tlačítko s šipkou */
+        /* Tlačítka a nativní select */
+        button, .native-select {
+            background-color: #007aff;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background 0.2s;
+        }
+
+        button:hover, .native-select:hover {
+            background-color: #0056b3;
+        }
+
+        /* Nativní select šipka */
         .native-select {
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
-            background-color: #007aff;
-            color: white;
-            padding: 14px 36px 14px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding-right: 36px;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 12px center;
             background-size: 20px;
-            transition: background 0.2s;
         }
 
-        .native-select:hover {
-            background-color: #0056b3;
+        /* Stylování nativního dialogu */
+        dialog {
+            border: none;
+            border-radius: 20px;
+            padding: 24px;
+            background: #ffffff;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            width: 300px;
+        }
+
+        dialog::backdrop {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .dialog-content {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: stretch;
+        }
+
+        .close-btn {
+            background: #ff3b30;
+            align-self: flex-end;
+            padding: 8px 14px;
+            font-size: 14px;
+        }
+
+        .close-btn:hover {
+            background: #d32f2f;
         }
     </style>
 </head>
 <body>
 
-    <!-- Reálné nativní HTML rozbalovací menu -->
+    <!-- 1. Tlačítko / Dropdown mimo dialog -->
     <select class="native-select" onchange="if(this.value) alert('Vybráno: ' + this.value)">
         <option value="" disabled selected>Navigation Menu 📋</option>
         <option value="Home">Home</option>
@@ -59,6 +98,48 @@
         <option value="BMP">--- BMP</option>
         <option value="GIF">--- GIF</option>
     </select>
+
+    <!-- Tlačítko pro otevření reálného dialogu -->
+    <button id="openDialogBtn">Otevřít v dialogu 🪟</button>
+
+    <!-- 2. Reálný HTML dialog element -->
+    <dialog id="myDialog">
+        <div class="dialog-content">
+            <button class="close-btn" id="closeDialogBtn">Zavřít ✕</button>
+            
+            <!-- Dropdown uvnitř dialogu -->
+            <select class="native-select" onchange="if(this.value) alert('Vybráno v dialogu: ' + this.value)">
+                <option value="" disabled selected>Navigation Menu 📋</option>
+                <option value="Home">Home</option>
+                <option value="Converter">Converter</option>
+                <option value="Base64 Decode">- Base64 Decode</option>
+                <option value="ASCII">-- ASCII</option>
+                <option value="Audio">-- Audio</option>
+                <option value="Basic Auth">-- Basic Auth</option>
+                <option value="File">-- File</option>
+                <option value="Hex">-- Hex</option>
+                <option value="Image">-- Image</option>
+                <option value="BMP">--- BMP</option>
+                <option value="GIF">--- GIF</option>
+            </select>
+        </div>
+    </dialog>
+
+    <script>
+        const openDialogBtn = document.getElementById('openDialogBtn');
+        const closeDialogBtn = document.getElementById('closeDialogBtn');
+        const myDialog = document.getElementById('myDialog');
+
+        // Otevření nativního dialogu pomocí .showModal()
+        openDialogBtn.addEventListener('click', () => {
+            myDialog.showModal();
+        });
+
+        // Zavření nativního dialogu pomocí .close()
+        closeDialogBtn.addEventListener('click', () => {
+            myDialog.close();
+        });
+    </script>
 
 </body>
 </html>
