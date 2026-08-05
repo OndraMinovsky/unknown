@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iOS 26 Liquid Glass 💧📱</title>
+    <title>iOS Liquid Glass TabBar 💧📱</title>
     <style>
         :root {
             color-scheme: light dark;
@@ -12,6 +12,7 @@
             --glass-border: rgba(255, 255, 255, 0.8);
             --text-color: #1c1c1e;
             --shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            --tabbar-bg: rgba(255, 255, 255, 0.75);
         }
 
         @media (prefers-color-scheme: dark) {
@@ -21,6 +22,7 @@
                 --glass-border: rgba(255, 255, 255, 0.15);
                 --text-color: #f9f9fb;
                 --shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+                --tabbar-bg: rgba(30, 30, 30, 0.65);
             }
         }
 
@@ -35,6 +37,7 @@
             height: 100vh;
             margin: 0;
             gap: 20px;
+            overflow: hidden;
         }
 
         .glass-container {
@@ -43,13 +46,14 @@
             -webkit-backdrop-filter: blur(25px) saturate(180%);
             border: 1px solid var(--glass-border);
             box-shadow: var(--shadow);
-            border-radius: 24px; /* Zde můžeš upravit zakulacení rohů */
+            border-radius: 24px;
             padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 16px;
             width: 300px;
             text-align: center;
+            margin-bottom: 60px; /* Odsazení, aby obsah nebyl pod tab barem */
         }
 
         select, button {
@@ -69,12 +73,12 @@
             box-sizing: border-box;
         }
 
-        /* Skryté prvky do ověření systému */
+        /* Skryté prvky do ověření */
         #loader-content, #app-content, #block-content {
             display: none;
         }
 
-        /* Nativní styl pro iOS spinner (ProgressRing / Activity Indicator) */
+        /* Nativní iOS spinner */
         .ios-spinner {
             width: 40px;
             height: 40px;
@@ -89,60 +93,122 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Spodní nativní iOS TabBar (Liquid Glass) */
+        .ios-tabbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: var(--tabbar-bg);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 20px; /* Prostor pro domácí lištu na iPhonu */
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-item {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s, transform 0.2s;
+            padding: 6px 12px;
+        }
+
+        .tab-item.active {
+            opacity: 1;
+            font-weight: 600;
+        }
+
+        .tab-item:active {
+            transform: scale(0.92);
+        }
+
+        .tab-icon {
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Načítací obrazovka s nativním iOS spinnerem -->
+    <!-- Načítací obrazovka -->
     <div id="loader-content" class="glass-container">
         <div class="ios-spinner"></div>
-        <p style="font-size: 14px; margin: 0; opacity: 0.8;">Ověřování systému iOS 26+...</p>
+        <p style="font-size: 14px; margin: 0; opacity: 0.8;">Načítání Liquid Glass...</p>
     </div>
 
-    <!-- Hlavní obsah pro iOS 26+ -->
+    <!-- Hlavní obsah pro iOS -->
     <div id="app-content" class="glass-container">
-        <h2>iOS 26 Liquid Glass 💧</h2>
+        <h2>iOS Liquid Glass 💧</h2>
         <select onchange="if(this.value) alert('Vybráno: ' + this.value)">
             <option value="" disabled selected>Vyber možnost...</option>
             <option value="Home">Home</option>
             <option value="Converter">Converter</option>
         </select>
-        <button onclick="alert('Funguje na iOS 26+!')">Akční tlačítko</button>
+        <button onclick="alert('Funguje na iOS!')">Akční tlačítko</button>
     </div>
 
-    <!-- Blokovaný obsah pro staré iOS nebo jiné platformy -->
+    <!-- Blokovaný obsah pro jiné platformy -->
     <div id="block-content" class="glass-container">
-        <h2>⚠️ Vyžadován iOS 26+</h2>
-        <p style="font-size: 14px; opacity: 0.8; margin: 0;">Tento web vyžaduje zařízení s operačním systémem iOS 26 nebo novějším.</p>
+        <h2>⚠️ Pouze pro iOS</h2>
+        <p style="font-size: 14px; opacity: 0.8; margin: 0;">Tento web vyžaduje zařízení s iOS.</p>
     </div>
 
-        <script>
-        // Zobrazíme spinner jako první
+    <!-- Spodní nativní iOS TabBar -->
+    <nav class="ios-tabbar" id="bottom-nav" style="display: none;">
+        <button class="tab-item active" onclick="switchTab(this, 'Home')">
+            <span class="tab-icon">🏠</span>
+            <span>Home</span>
+        </button>
+        <button class="tab-item" onclick="switchTab(this, 'Explore')">
+            <span class="tab-icon">✨</span>
+            <span>Explore</span>
+        </button>
+        <button class="tab-item" onclick="switchTab(this, 'Settings')">
+            <span class="tab-icon">⚙️</span>
+            <span>Settings</span>
+        </button>
+    </nav>
+
+    <script>
         document.getElementById('loader-content').style.display = 'flex';
 
-        // Detekce iOS zařízení
-        function checkiOSVersion() {
+        function checkiOSDevice() {
             const ua = navigator.userAgent;
-            const isIOSDevice = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-            
-            // Pro účely testování teď ověřujeme pouze to, zda jde o iOS zařízení
-            return isIOSDevice;
+            return /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
         }
 
-        // Krátká prodleva se spinnerem (0.8 sekundy) a spuštění
         setTimeout(() => {
             document.getElementById('loader-content').style.display = 'none';
 
-            if (checkiOSVersion()) {
+            if (checkiOSDevice()) {
                 document.getElementById('app-content').style.display = 'flex';
-                // Uvítací alert
-                alert("Welcome to the iOS Liquid Glass Playground!");
+                document.getElementById('bottom-nav').style.display = 'flex';
+                alert("Welcome to the iOS liquid glass playground");
             } else {
                 document.getElementById('block-content').style.display = 'flex';
             }
         }, 800);
-    </script>
 
+        function switchTab(element, tabName) {
+            // Změna aktivního stavu v tab baru
+            document.querySelectorAll('.tab-item').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            alert('Přepnuto na záložku: ' + tabName);
+        }
+    </script>
 
 </body>
 </html>
